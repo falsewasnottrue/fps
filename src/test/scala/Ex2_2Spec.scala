@@ -7,8 +7,7 @@ class Ex2_2Spec extends FlatSpec with Matchers {
    */
 
   def isSorted[A](as: Array[A], ordered: (A,A) => Boolean): Boolean = as match {
-    case Array() => true
-    case Array(_) => true
+    case _ if as.size < 2 => true
     case Array(a, b, _*) => ordered(a,b) && isSorted(as.tail, ordered)
     case _ => false
   }
