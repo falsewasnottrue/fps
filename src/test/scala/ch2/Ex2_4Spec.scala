@@ -1,3 +1,5 @@
+package ch2
+
 import org.scalatest.{FlatSpec, Matchers}
 
 class Ex2_4Spec extends FlatSpec with Matchers {
