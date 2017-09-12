@@ -8,12 +8,21 @@ class Ex2_1Spec extends FlatSpec with Matchers {
     *  Your definition should use a local tail-recursive function.
     */
 
-  def fib(n: Int): Int = fibNaive(n)
+  def fib(n: Int): Int = fibTailRecursive(n)
 
-  def fibNaive(n: Int): Int =
+  def fibNaiveRecursive(n: Int): Int =
     if (n==0) 0
     else if (n==1) 1
     else fib(n-1) + fib(n-2)
+
+  def fibTailRecursive(n: Int): Int =  {
+    def fib(n: Int, a: Int, b: Int): Int =
+      if (n==0) a
+      else if (n==1) b
+      else fib(n-1, b, a+b)
+
+    fib(n, 0, 1)
+  }
 
   it should "return 0 at position 0" in {
     fib(0) should be(0)
