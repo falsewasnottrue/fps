@@ -33,9 +33,8 @@ object List {
     if (n==0) ls else drop(List.tail(ls), n-1)
 
   def dropWhile[A](ls: List[A])(p: A => Boolean): List[A] = ls match {
-    case Nil => Nil
     case Cons(h, t) if p(h) => dropWhile(t)(p)
-    case t => t
+    case _ => ls
   }
 
   def init[A](ls: List[A]): List[A] = ls match {
