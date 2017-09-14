@@ -28,4 +28,7 @@ object List {
   def apply[A](as: A*): List[A] =
     if (as.isEmpty) Nil
     else Cons(as.head, apply(as.tail: _*))
+
+  def drop[A](ls: List[A], n: Int): List[A] =
+    if (n==0) ls else drop(ls.tail, n-1)
 }
