@@ -50,4 +50,6 @@ object List {
 
   def sum2(ints: List[Int]): Int = foldRight(ints, 0)(_ + _)
   def product2(ds: List[Double]): Double = foldRight(ds, 1.0)(_ * _)
+
+  def length[A](ls: List[A]): Int = foldRight(ls, 0)((_, l) => l+1)
 }
