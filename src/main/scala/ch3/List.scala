@@ -52,4 +52,10 @@ object List {
   def product2(ds: List[Double]): Double = foldRight(ds, 1.0)(_ * _)
 
   def length[A](ls: List[A]): Int = foldRight(ls, 0)((_, l) => l+1)
+
+  @annotation.tailrec
+  def foldLeft[A,B](ls: List[A], z: B)(f: (B,A) => B): B = ls match {
+    case Nil => z
+    case Cons(h, t) => foldLeft(t, f(z, h))(f)
+  }
 }
