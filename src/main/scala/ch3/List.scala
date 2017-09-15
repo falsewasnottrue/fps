@@ -92,4 +92,8 @@ object List {
     case Cons(h, t) if h % 2 == 1 => removeOdds(t)
     case Cons(h, t) => Cons(h, removeOdds(t))
   }
+
+  // 3.20 flatMap
+  def flatMap[A, B](l: List[A])(f: A => List[B]): List[B] =
+    concat(map(l)(f))
 }
