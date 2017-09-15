@@ -2,7 +2,7 @@ package ch2
 
 import org.scalatest.{FlatSpec, Matchers}
 
-class Ex2_1Spec extends FlatSpec with Matchers {
+class Ex1Spec extends FlatSpec with Matchers {
 
   /**
     *  * Write a recursive function to get the nth Fibonacci number (http://mng.bz/C29s). The first two Fibonacci numbers are 0 and 1.

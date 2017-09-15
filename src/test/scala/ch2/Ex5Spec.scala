@@ -2,7 +2,7 @@ package ch2
 
 import org.scalatest.{FlatSpec, Matchers}
 
-class Ex2_5Spec extends FlatSpec with Matchers {
+class Ex5Spec extends FlatSpec with Matchers {
 
   /**
     * Implement the higher-order function that composes two functions.

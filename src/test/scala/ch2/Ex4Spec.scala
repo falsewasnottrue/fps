@@ -2,7 +2,7 @@ package ch2
 
 import org.scalatest.{FlatSpec, Matchers}
 
-class Ex2_4Spec extends FlatSpec with Matchers {
+class Ex4Spec extends FlatSpec with Matchers {
 
   /**
     * Implement uncurry, which reverses the transformation of curry. Note that since =>

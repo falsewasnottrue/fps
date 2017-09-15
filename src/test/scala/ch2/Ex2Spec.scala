@@ -2,7 +2,7 @@ package ch2
 
 import org.scalatest.{FlatSpec, Matchers}
 
-class Ex2_2Spec extends FlatSpec with Matchers {
+class Ex2Spec extends FlatSpec with Matchers {
 
   /**
    * Implement isSorted, which checks whether an Array[A] is sorted according to a given comparison function:
