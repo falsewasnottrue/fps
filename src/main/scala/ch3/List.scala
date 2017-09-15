@@ -96,4 +96,11 @@ object List {
   // 3.20 flatMap
   def flatMap[A, B](l: List[A])(f: A => List[B]): List[B] =
     concat(map(l)(f))
+
+  // 3.22 addPairwise
+  def addPairwise(a: List[Int], b: List[Int]): List[Int] = (a,b) match {
+    case (Nil, _) => Nil
+    case (_, Nil) => Nil
+    case (Cons(h1,t1), Cons(h2,t2)) => Cons(h1+h2,addPairwise(t1,t2))
+  }
 }
