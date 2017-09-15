@@ -99,8 +99,15 @@ object List {
 
   // 3.22 addPairwise
   def addPairwise(a: List[Int], b: List[Int]): List[Int] = (a,b) match {
-    case (Nil, _) => Nil
-    case (_, Nil) => Nil
     case (Cons(h1,t1), Cons(h2,t2)) => Cons(h1+h2,addPairwise(t1,t2))
+    case _ => Nil
   }
+
+  // 3.23 zipWith
+  def zipWith[A, B, C](a: List[A], b: List[B])(f: (A, B) => C): List[C] = (a,b) match {
+    case (Cons(a1, t1), Cons(b1, t2)) => Cons(f(a1,b1), zipWith(t1,t2)(f))
+    case _ => Nil
+  }
+
+
 }
