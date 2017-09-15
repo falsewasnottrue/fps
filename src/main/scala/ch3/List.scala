@@ -77,4 +77,8 @@ object List {
   // 3.14 append via foldRight
   def appendViaFoldRight[A](l: List[A], r: List[A]): List[A] =
     foldRight(l,r)(Cons(_,_))
+
+  // 3.15 concat
+  def concat[A](l: List[List[A]]): List[A] =
+    foldRight(l, List[A]())(List.appendViaFoldRight)
 }
