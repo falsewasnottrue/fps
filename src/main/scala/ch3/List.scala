@@ -81,8 +81,15 @@ object List {
   // 3.15 concat
   def concat[A](l: List[List[A]]): List[A] =
     foldRight(l, List[A]())(List.appendViaFoldRight)
-  
+
   // 3.18 map
   def map[A, B](l: List[A])(f: A => B): List[B] =
     List.foldRight(l, List[B]())((a, t) => Cons(f(a), t))
+
+  // 3.19 removeOdds
+  def removeOdds(l: List[Int]): List[Int] = l match {
+    case Nil => Nil
+    case Cons(h, t) if h % 2 == 1 => removeOdds(t)
+    case Cons(h, t) => Cons(h, removeOdds(t))
+  }
 }
