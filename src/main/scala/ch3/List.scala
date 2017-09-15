@@ -109,5 +109,16 @@ object List {
     case _ => Nil
   }
 
+  // 3.24 startsWith & hasSubsequence
+  def startsWith[A](l: List[A], prefix: List[A]): Boolean = (l, prefix) match {
+    case (_, Nil) => true
+    case (Cons(a, t1), Cons(b, t2)) if a == b => startsWith(t1, t2)
+    case _ => false
+  }
 
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = sup match {
+    case Nil => false
+    case _ if startsWith(sup, sub) => true
+    case Cons(_, t) => hasSubsequence(t, sub)
+  }
 }
