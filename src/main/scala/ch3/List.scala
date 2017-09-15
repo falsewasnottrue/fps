@@ -81,4 +81,8 @@ object List {
   // 3.15 concat
   def concat[A](l: List[List[A]]): List[A] =
     foldRight(l, List[A]())(List.appendViaFoldRight)
+  
+  // 3.18 map
+  def map[A, B](l: List[A])(f: A => B): List[B] =
+    List.foldRight(l, List[B]())((a, t) => Cons(f(a), t))
 }
