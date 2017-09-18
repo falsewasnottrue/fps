@@ -19,7 +19,14 @@ class OptionSpec extends FlatSpec with Matchers {
     (None: Option[Int]).flatMap(_ => None) should be(None)
   }
 
-  // getOrElse
+  "getOrElse" should "return the value it is present" in {
+    Some(1).getOrElse(2) should be(1)
+  }
+
+  it should "return the default if there is no value" in {
+    None.getOrElse(2) should be(2)
+  }
+
   // orElse
   // filter
 
