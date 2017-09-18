@@ -1,6 +1,7 @@
 package ch4
 
 import org.scalatest.{FlatSpec, Matchers}
+import Option._
 
 class OptionSpec extends FlatSpec with Matchers {
 
@@ -49,4 +50,14 @@ class OptionSpec extends FlatSpec with Matchers {
     None.filter(_ => true) should be(None)
   }
 
+  "map2" should "combine two options" in {
+      map2(Some(1), Some(2))(_ + _) should be(Some(3))
+  }
+
+  it should "be None if either value is none" in {
+    map2(None: Option[Int], Some(2))(_ * _) should be(None)
+    map2(Some(2), None: Option[Int])(_ * _) should be(None)
+    map2(None: Option[Int], None: Option[Int])(_ * _) should be(None)
+  }
 }
+
