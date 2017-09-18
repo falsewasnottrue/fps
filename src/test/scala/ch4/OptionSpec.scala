@@ -36,7 +36,17 @@ class OptionSpec extends FlatSpec with Matchers {
     None.orElse(Some(2)) should be(Some(2))
     None.orElse(None) should be(None)
   }
-  
-  // filter
+
+  "filter" should "return the value if the predicate holds" in {
+    Some(1).filter(_ % 2 == 1) should be(Some(1))
+  }
+
+  it should "return none if the predicate is not true" in {
+    Some(1).filter(_ % 2 == 0) should be(None)
+  }
+
+  it should "return none if there is no value" in {
+    None.filter(_ => true) should be(None)
+  }
 
 }

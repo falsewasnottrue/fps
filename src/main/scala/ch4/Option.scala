@@ -5,6 +5,7 @@ sealed trait Option[+A] {
   def flatMap[B](f: A => Option[B]): Option[B] = None
   def getOrElse[B >: A](alt: B): B = alt
   def orElse[B >: A](alt: Option[B]): Option[B] = alt
+  def filter(pred: A => Boolean): Option[A] = None
 }
 
 case object None extends Option[Nothing]
@@ -14,4 +15,5 @@ case class Some[+A](get: A) extends Option[A] {
   override def flatMap[B](f: A => Option[B]): Option[B] = f(get)
   override def getOrElse[B >: A](alt: B): B = get
   override def orElse[B >: A](alt: Option[B]): Option[B] = this
+  override def filter(pred: A => Boolean): Option[A] = if (pred(get)) this else None
 }
