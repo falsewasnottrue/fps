@@ -27,7 +27,16 @@ class OptionSpec extends FlatSpec with Matchers {
     None.getOrElse(2) should be(2)
   }
 
-  // orElse
+  "orElse" should "return this value if it is present" in {
+    Some(1).orElse(Some(2)) should be(Some(1))
+    Some(1).orElse(None) should be(Some(1))
+  }
+
+  it should "return the default it there is no value" in {
+    None.orElse(Some(2)) should be(Some(2))
+    None.orElse(None) should be(None)
+  }
+  
   // filter
 
 }
