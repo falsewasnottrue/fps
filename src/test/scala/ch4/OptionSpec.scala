@@ -72,5 +72,13 @@ class OptionSpec extends FlatSpec with Matchers {
   it should "return Some for the empty list" in {
     sequence(Nil) should be(Some(Nil))
   }
+
+  "traverse" should "return Some if all elements are mapped to Some" in {
+    traverse(List(1,2))(i => Some(i + 1)) should be(Some(List(2,3)))
+  }
+
+  it should "return None if only a single element is mapped to None" in {
+    traverse(List(1,2))(i => if (i%2 == 1) Some(i) else None) should be(None)
+  }
 }
 

@@ -36,5 +36,6 @@ object Option {
   }
 
   // ex 4.5
-  def traverse[A,B](a: List[A])(f: A => Option[B]): Option[List[B]] = ???
+  def traverse[A,B](a: List[A])(f: A => Option[B]): Option[List[B]] =
+    sequence(a map f)
 }
