@@ -1,6 +1,7 @@
 package ch4
 
 import org.scalatest.{FlatSpec, Matchers}
+import Either._
 
 class EitherSpec extends FlatSpec with Matchers {
 
@@ -45,4 +46,14 @@ class EitherSpec extends FlatSpec with Matchers {
     Right(1).map2(v)(_ + _) should be(v)
     v.map2(v)(_ + _) should be(v)
   }
+
+  "sequence" should "collect all right values" in {
+    sequence(List(Right(1), Right(2), Right(3))) should be(Right(List(1,2,3)))
+  }
+
+  it should "be left if there is a single left value" in {
+    sequence(List(Right(1), Left("error"), Right(3))) should be(Left("error"))
+  }
+
+  // traverse
 }

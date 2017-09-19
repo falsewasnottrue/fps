@@ -1,6 +1,5 @@
 package ch4
 
-// ex 4.6
 sealed trait Either[+E, +A] {
   def map[B](f: A => B): Either[E,B] = this match {
     case Right(a) => Right(f(a))
@@ -23,3 +22,18 @@ sealed trait Either[+E, +A] {
 
 case class Left[+E](value: E) extends Either[E, Nothing]
 case class Right[+A](value: A) extends Either[Nothing, A]
+
+object Either {
+
+  def sequence[E, A](es: List[Either[E, A]]): Either[E, List[A]] = {
+    def sequenceAcc(acc: Either[E, List[A]], ls: List[Either[E, A]]): Either[E, List[A]] = (acc, ls) match {
+      case (_, Nil) => acc
+      case (Right(as), Right(l) :: ltail) => sequenceAcc(Right(as :+ l), ltail)
+      case (_, Left(e) :: _) => Left(e)
+    }
+
+    sequenceAcc(Right(Nil), es)
+  }
+  def traverse[E, A, B](es: List[A])(f: A => Either[E, B]): Either[E, List[B]] = ???
+
+}
