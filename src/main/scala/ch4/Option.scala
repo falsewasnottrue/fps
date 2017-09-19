@@ -36,6 +36,18 @@ object Option {
   }
 
   // ex 4.5
-  def traverse[A,B](a: List[A])(f: A => Option[B]): Option[List[B]] =
+  def traverse[A,B](a: List[A])(f: A => Option[B]): Option[List[B]] = {
+    def traverseAcc(acc: Option[List[B]], ls: List[A]): Option[List[B]] = (acc, ls) match {
+      case (_, Nil) => acc
+      case (Some(as), aa :: tail) => f(aa) match {
+        case Some(v) => traverseAcc(Some(as :+ v), tail)
+        case _ => None
+      }
+    }
+
+    traverseAcc(Some(Nil), a)
+  }
+
+  def traverseNaive[A,B](a: List[A])(f: A => Option[B]): Option[List[B]] =
     sequence(a map f)
 }
