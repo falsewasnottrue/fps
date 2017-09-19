@@ -23,4 +23,14 @@ class EitherSpec extends FlatSpec with Matchers {
     v.flatMap(i => Right(i+1)) should be(v)
     v.flatMap(_ => Left("error 2")) should be(Left("error"))
   }
+
+  "orElse" should "keep the right value" in {
+    Right(1).orElse(Right(2)) should be(Right(1))
+    Right(1).orElse(Left("error")) should be(Right(1))
+  }
+
+  it should "override left value" in {
+    Left("error").orElse(Right(2)) should be(Right(2))
+    Left("error").orElse(Left("error 2")) should be(Left("error 2"))
+  }
 }
