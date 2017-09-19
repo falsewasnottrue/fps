@@ -59,5 +59,18 @@ class OptionSpec extends FlatSpec with Matchers {
     map2(Some(2), None: Option[Int])(_ * _) should be(None)
     map2(None: Option[Int], None: Option[Int])(_ * _) should be(None)
   }
+
+  "sequence" should "collect options" in {
+    sequence(List(Some(1), Some(2), Some(3))) should be(Some(List(1,2,3)))
+  }
+
+  it should "return None if there is a single None in the collection" in {
+    sequence(List(Some(1), None, Some(3))) should be(None)
+  }
+
+  // current implementation handles edge case like this:
+  it should "return Some for the empty list" in {
+    sequence(Nil) should be(Some(Nil))
+  }
 }
 
