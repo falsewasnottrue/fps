@@ -33,4 +33,16 @@ class EitherSpec extends FlatSpec with Matchers {
     Left("error").orElse(Right(2)) should be(Right(2))
     Left("error").orElse(Left("error 2")) should be(Left("error 2"))
   }
+
+  "map2" should "call function if both values are right" in {
+    Right(1).map2(Right(2))(_ + _) should be(Right(3))
+  }
+
+  it should "fail if either value is left" in {
+    val v: Either[String, Int] = Left("error")
+
+    v.map2(Right(2))(_ + _) should be(v)
+    Right(1).map2(v)(_ + _) should be(v)
+    v.map2(v)(_ + _) should be(v)
+  }
 }
