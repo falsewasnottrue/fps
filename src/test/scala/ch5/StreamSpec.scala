@@ -74,4 +74,10 @@ class StreamSpec extends FlatSpec with Matchers {
 
     Empty.filter(_ => true).toList should be(Nil)
   }
+
+  "append" should "append two streams" in {
+    Stream(1,2).append(Stream(3,4)).toList should be(List(1,2,3,4))
+    Empty.append(Stream(3,4)).toList should be(List(3,4))
+    Stream(1,2).append(Empty).toList should be(List(1,2))
+  }
 }
