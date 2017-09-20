@@ -17,6 +17,12 @@ sealed trait Stream[+A] {
     case Cons(_,t) if n > 0 => t().drop(n-1)
     case _ => this
   }
+
+  def dropWhile(p: A => Boolean): Stream[A] = this match {
+    case Cons(h, t) if p(h()) => t().dropWhile(p)
+    case _ => this
+  }
+
 }
 case object Empty extends Stream[Nothing]
 case class Cons[+A](h: () => A, t: () => Stream[A]) extends Stream[A]
