@@ -3,9 +3,9 @@ package ch5
 sealed trait Stream[+A] {
   import Stream._
 
-  def toList(): List[A] = this match {
+  def toList: List[A] = this match {
     case Empty => Nil
-    case Cons(h, t) => h() :: t().toList()
+    case Cons(h, t) => h() :: t().toList
   }
 
   def take(n: Int): Stream[A] = this match {
@@ -35,11 +35,14 @@ sealed trait Stream[+A] {
   }
 
   def forAll(pred: A => Boolean): Boolean = this match {
-    case Cons(h, t) if !pred(h()) => false
+    case Cons(h, _) if !pred(h()) => false
     case Cons(_, t) => t().forAll(pred)
     case Empty => true
   }
+
+  def headOption: Option[A] = foldRight(this, None: Option[A])((h, _) => Some(h))
 }
+
 case object Empty extends Stream[Nothing]
 case class Cons[+A](h: () => A, t: () => Stream[A]) extends Stream[A]
 
