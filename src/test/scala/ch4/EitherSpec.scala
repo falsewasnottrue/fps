@@ -55,5 +55,11 @@ class EitherSpec extends FlatSpec with Matchers {
     sequence(List(Right(1), Left("error"), Right(3))) should be(Left("error"))
   }
 
-  // traverse
+  "traverse" should "collect all right values" in {
+    traverse(List(1,2,3))(Right(_)) should be(Right(List(1,2,3)))
+  }
+
+  it should "be left if there is a single left value" in {
+    traverse(List(1,2,3))(i => if (i%2 ==0) Right(i) else Left("error")) should be(Left("error"))
+  }
 }

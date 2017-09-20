@@ -34,6 +34,6 @@ object Either {
 
     sequenceAcc(Right(Nil), es)
   }
-  def traverse[E, A, B](es: List[A])(f: A => Either[E, B]): Either[E, List[B]] = ???
 
+  def traverse[E, A, B](es: List[A])(f: A => Either[E, B]): Either[E, List[B]] = sequence(es map f)
 }
