@@ -92,4 +92,8 @@ class StreamSpec extends FlatSpec with Matchers {
     ones.take(5).toList should be(List(1,1,1,1,1))
     ones.take(1000).toList.size should be(1000)
   }
+
+  "from" should "start an infinite stream" in {
+    from(3).take(3).toList should be(List(3,4,5))
+  }
 }
