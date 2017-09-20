@@ -80,4 +80,10 @@ class StreamSpec extends FlatSpec with Matchers {
     Empty.append(Stream(3,4)).toList should be(List(3,4))
     Stream(1,2).append(Empty).toList should be(List(1,2))
   }
+
+  "flatMap" should "flat map to a stream" in {
+    Stream(1,2).flatMap(i => Stream(i*2, i*3)).toList should be(List(2,3,4,6))
+    Stream(1,2).flatMap(i => Empty).toList should be(Nil)
+    Empty.flatMap(i => Empty).toList should be(Nil)
+  }
 }
