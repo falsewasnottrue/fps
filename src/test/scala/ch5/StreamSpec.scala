@@ -43,4 +43,9 @@ class StreamSpec extends FlatSpec with Matchers {
     (Empty: Stream[Int]).exists(_ == 3) should be(false)
   }
 
+  "forAll" should "return true iff predicate holds for all elements" in {
+    Stream(1,2,3,4).forAll(_ < 10) should be(true)
+    Stream(1,2,3,4).forAll(_ < 4) should be(false)
+    (Empty: Stream[Int]).forAll(_ < 1) should be(true)
+  }
 }

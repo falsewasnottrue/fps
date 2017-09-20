@@ -31,7 +31,13 @@ sealed trait Stream[+A] {
   def exists(pred: A => Boolean): Boolean = this match {
     case Cons(h, _) if pred(h()) => true
     case Cons(_, t) => t().exists(pred)
-    case _ => false
+    case Empty => false
+  }
+
+  def forAll(pred: A => Boolean): Boolean = this match {
+    case Cons(h, t) if !pred(h()) => false
+    case Cons(_, t) => t().forAll(pred)
+    case Empty => true
   }
 
 }
