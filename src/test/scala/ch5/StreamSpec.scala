@@ -86,4 +86,10 @@ class StreamSpec extends FlatSpec with Matchers {
     Stream(1,2).flatMap(i => Empty).toList should be(Nil)
     Empty.flatMap(i => Empty).toList should be(Nil)
   }
+
+  "constant" should "generate infinite streams" in {
+    val ones: Stream[Int] = constant(1)
+    ones.take(5).toList should be(List(1,1,1,1,1))
+    ones.take(1000).toList.size should be(1000)
+  }
 }
