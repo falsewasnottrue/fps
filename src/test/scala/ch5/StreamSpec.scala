@@ -51,12 +51,19 @@ class StreamSpec extends FlatSpec with Matchers {
   }
 
   "foldRight" should "fold a stream from the right" in {
-    foldRight(Stream(1,2,3,4), 0)(_ + _) should be(10)
-    foldRight(Stream(1,2,3,4), 1)(_ * _) should be(24)
+    Stream(1,2,3,4).foldRight(0)(_ + _) should be(10)
+    Stream(1,2,3,4).foldRight(1)(_ * _) should be(24)
   }
 
   "headOption" should "return the stream head if there is one" in {
     Empty.headOption should be(None)
     Stream(1,2,3,4).headOption should be(Some(1))
+  }
+
+  "map" should "map values of a stream" in {
+    Stream(1,2,3,4).map(_ + 1).toList should be(List(2,3,4,5))
+    Stream(1,2,3,4).map(i => "nr " + i).toList should be(List("nr 1", "nr 2", "nr 3", "nr 4"))
+
+    (Empty: Stream[Int]).map(_ + 1).toList should be(Nil)
   }
 }

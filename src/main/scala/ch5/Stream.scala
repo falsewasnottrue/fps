@@ -40,7 +40,14 @@ sealed trait Stream[+A] {
     case Empty => true
   }
 
-  def headOption: Option[A] = foldRight(this, None: Option[A])((h, _) => Some(h))
+  def foldRight[B](z: B)(f: (A,B) => B): B = this match {
+    case Empty => z
+    case Cons(h,t) => f(h(), t().foldRight(z)(f))
+  }
+
+  def headOption: Option[A] = foldRight(None: Option[A])((h, _) => Some(h))
+
+  def map[B](f: A => B): Stream[B] = foldRight(empty[B])((h, t) => cons(f(h), t))
 }
 
 case object Empty extends Stream[Nothing]
@@ -57,9 +64,4 @@ object Stream {
 
   def apply[A](as: A*): Stream[A] =
     if (as.isEmpty) empty else cons(as.head, apply(as.tail: _*))
-
-  def foldRight[A,B](s: Stream[A], z: B)(f: (A,B) => B): B = s match {
-    case Empty => z
-    case Cons(h,t) => f(h(), foldRight(t(), z)(f))
-  }
 }
