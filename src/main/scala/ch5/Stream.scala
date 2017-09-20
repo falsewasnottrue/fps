@@ -15,4 +15,9 @@ object Stream {
 
   def apply[A](as: A*): Stream[A] =
     if (as.isEmpty) empty else cons(as.head, apply(as.tail: _*))
+
+  def toList[A](stream: Stream[A]): List[A] = stream match {
+    case Empty => Nil
+    case Cons(h, t) => h() :: toList(t())
+  }
 }
