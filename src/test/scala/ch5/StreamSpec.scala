@@ -1,12 +1,19 @@
 package ch5
 
 import org.scalatest.{FlatSpec, Matchers}
-import Stream._
 
 class StreamSpec extends FlatSpec with Matchers {
 
   "toList" should "turn a stream to a list" in {
-    toList(Empty) should be(Nil)
-    toList(Stream(1,2,3,4)) should be(List(1,2,3,4))
+    Empty.toList() should be(Nil)
+    Stream(1,2,3,4).toList() should be(List(1,2,3,4))
   }
+
+  "take" should "return a prefix stream" in {
+    Stream(1,2,3,4).take(2).toList() should be(List(1,2))
+    Stream(1,2,3,4).take(10).toList() should be(List(1,2,3,4))
+
+    Empty.take(10).toList() should be(Nil)
+  }
+
 }
