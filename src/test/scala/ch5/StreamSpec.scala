@@ -1,6 +1,7 @@
 package ch5
 
 import org.scalatest.{FlatSpec, Matchers}
+import Stream._
 
 class StreamSpec extends FlatSpec with Matchers {
 
@@ -47,5 +48,10 @@ class StreamSpec extends FlatSpec with Matchers {
     Stream(1,2,3,4).forAll(_ < 10) should be(true)
     Stream(1,2,3,4).forAll(_ < 4) should be(false)
     (Empty: Stream[Int]).forAll(_ < 1) should be(true)
+  }
+
+  "foldRight" should "fold a stream from the right" in {
+    foldRight(Stream(1,2,3,4), 0)(_ + _) should be(10)
+    foldRight(Stream(1,2,3,4), 1)(_ * _) should be(24)
   }
 }

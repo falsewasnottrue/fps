@@ -39,7 +39,6 @@ sealed trait Stream[+A] {
     case Cons(_, t) => t().forAll(pred)
     case Empty => true
   }
-
 }
 case object Empty extends Stream[Nothing]
 case class Cons[+A](h: () => A, t: () => Stream[A]) extends Stream[A]
@@ -55,4 +54,9 @@ object Stream {
 
   def apply[A](as: A*): Stream[A] =
     if (as.isEmpty) empty else cons(as.head, apply(as.tail: _*))
+
+  def foldRight[A,B](s: Stream[A], z: B)(f: (A,B) => B): B = s match {
+    case Empty => z
+    case Cons(h,t) => f(h(), foldRight(t(), z)(f))
+  }
 }
