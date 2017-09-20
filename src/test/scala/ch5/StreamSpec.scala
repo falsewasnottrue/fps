@@ -16,6 +16,13 @@ class StreamSpec extends FlatSpec with Matchers {
     Empty.take(10).toList() should be(Nil)
   }
 
+  "takeWhile" should "return a prefix stream" in {
+    Stream(1,2,3,4).takeWhile(_ < 3).toList() should be(List(1,2))
+    Stream(1,2,3,4).takeWhile(_ < 10).toList() should be(List(1,2,3,4))
+
+    (Empty: Stream[Int]).takeWhile(_ < 10).toList() should be(Nil)
+  }
+
   "drop" should "remove a prefix stream" in {
     Stream(1,2,3,4).drop(2).toList() should be(List(3,4))
     Stream(1,2,3,4).drop(10).toList() should be(Nil)
@@ -29,4 +36,5 @@ class StreamSpec extends FlatSpec with Matchers {
 
     (Empty: Stream[Int]).dropWhile(_ < 5).toList() should be(Nil)
   }
+
 }

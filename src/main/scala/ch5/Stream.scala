@@ -13,13 +13,18 @@ sealed trait Stream[+A] {
     case _ => Empty
   }
 
+  def takeWhile(pred: A => Boolean): Stream[A] = this match {
+    case Cons(h, t) if pred(h()) => cons(h(), t().takeWhile(pred))
+    case _ => Empty
+  }
+
   def drop(n: Int): Stream[A] = this match {
     case Cons(_,t) if n > 0 => t().drop(n-1)
     case _ => this
   }
 
-  def dropWhile(p: A => Boolean): Stream[A] = this match {
-    case Cons(h, t) if p(h()) => t().dropWhile(p)
+  def dropWhile(pred: A => Boolean): Stream[A] = this match {
+    case Cons(h, t) if pred(h()) => t().dropWhile(pred)
     case _ => this
   }
 
