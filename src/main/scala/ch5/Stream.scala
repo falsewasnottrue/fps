@@ -28,6 +28,12 @@ sealed trait Stream[+A] {
     case _ => this
   }
 
+  def exists(pred: A => Boolean): Boolean = this match {
+    case Cons(h, _) if pred(h()) => true
+    case Cons(_, t) => t().exists(pred)
+    case _ => false
+  }
+
 }
 case object Empty extends Stream[Nothing]
 case class Cons[+A](h: () => A, t: () => Stream[A]) extends Stream[A]

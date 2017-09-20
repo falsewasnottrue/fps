@@ -37,4 +37,10 @@ class StreamSpec extends FlatSpec with Matchers {
     (Empty: Stream[Int]).dropWhile(_ < 5).toList() should be(Nil)
   }
 
+  "exists" should "return true iff there is an element for which the predicate holds" in {
+    Stream(1,2,3,4).exists(_ == 3) should be(true)
+    Stream(1,2,3,4).exists(_ == 5) should be(false)
+    (Empty: Stream[Int]).exists(_ == 3) should be(false)
+  }
+
 }
