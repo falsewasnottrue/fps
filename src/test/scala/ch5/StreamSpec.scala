@@ -66,4 +66,12 @@ class StreamSpec extends FlatSpec with Matchers {
 
     (Empty: Stream[Int]).map(_ + 1).toList should be(Nil)
   }
+
+  "filter" should "filter a stream" in {
+    Stream(1,2,3,4).filter(_ % 2 == 0).toList should be(List(2,4))
+    Stream(1,2,3,4).filter(_ => true).toList should be(List(1,2,3,4))
+    Stream(1,2,3,4).filter(_ => false).toList should be(Nil)
+
+    Empty.filter(_ => true).toList should be(Nil)
+  }
 }
