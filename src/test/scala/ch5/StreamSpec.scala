@@ -16,4 +16,11 @@ class StreamSpec extends FlatSpec with Matchers {
     Empty.take(10).toList() should be(Nil)
   }
 
+  "drop" should "remove a prefix stream" in {
+    Stream(1,2,3,4).drop(2).toList() should be(List(3,4))
+    Stream(1,2,3,4).drop(10).toList() should be(Nil)
+
+    Empty.drop(10).toList() should be(Nil)
+  }
+
 }
