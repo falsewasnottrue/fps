@@ -31,4 +31,25 @@ object RNG {
     (res, rng2)
   }
 
+  def intDouble(rng: RNG): ((Int, Double), RNG) = {
+    val (i, r2) = rng.nextInt
+    val (d, r3) = double(r2)
+
+    ((i,d), r3)
+  }
+
+  def doubleInt(rng: RNG): ((Double, Int), RNG) = {
+    val (d, r2) = double(rng)
+    val (i, r3) = r2.nextInt
+
+    ((d,i), r3)
+  }
+
+  def double3(rng: RNG): ((Double, Double, Double), RNG) = {
+    val (d1, r1) = double(rng)
+    val (d2, r2) = double(r1)
+    val (d3, r3) = double(r2)
+
+    ((d1,d2,d3), r3)
+  }
 }
