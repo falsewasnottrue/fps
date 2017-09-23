@@ -2,6 +2,12 @@ package ch6
 
 trait RNG {
   def nextInt: (Int, RNG)
+
+  def nonNegativeInt(rng: RNG): (Int, RNG) = {
+    val (n, nextRNG) = nextInt
+
+    (Math.abs(n), nextRNG)
+  }
 }
 
 case class SimpleRNG(seed: Long) extends RNG {
