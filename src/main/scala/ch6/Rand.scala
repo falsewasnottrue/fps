@@ -39,4 +39,12 @@ object Rand {
   def intDouble: Rand[(Int, Double)] = both(int, double)
 
   def doubleInt: Rand[(Double, Int)] = both(double, int)
+
+  def sequence[A](ls: List[Rand[A]]): Rand[List[A]] = ls match {
+    case Nil => unit(Nil)
+    case ra :: ras => map2(ra, sequence(ras))((a, as) => a :: as)
+  }
+
+  def ints(count: Int): Rand[List[Int]] =
+    sequence(List.fill(count)(int))
 }

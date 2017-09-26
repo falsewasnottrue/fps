@@ -21,4 +21,11 @@ class RandSpec extends FlatSpec with Matchers {
     d should be < 1.0
   }
 
+  "ints" should "return random ints" in {
+    val rng = SimpleRNG(42)
+    val (is, _) = Rand.ints(3)(rng)
+
+    is.size should be(3)
+  }
+
 }
