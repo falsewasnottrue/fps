@@ -52,15 +52,6 @@ object Candy {
             Machine(true, candy - 1, coin)
         }
 
-  def get[S]: State[S, S] = State(s => (s, s))
-
-  def set[S](s: S): State[S, Unit] = State(_ => (s, ()))
-
-  def modify[S](f: S => S): State[S, Unit] = for {
-    s <- get
-    _ <- set(f(s))
-  } yield ()
-
   def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] =
     for {
       _ <- sequence(inputs map (modify[Machine] _ compose update))
