@@ -47,4 +47,10 @@ object Rand {
 
   def ints(count: Int): Rand[List[Int]] =
     sequence(List.fill(count)(int))
+
+  def flatMap[A,B](ra: Rand[A])(f: A => Rand[B]): Rand[B] = rng => {
+    val (a, next) = ra(rng)
+    f(a)(next)
+  }
+
 }
