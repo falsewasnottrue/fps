@@ -13,7 +13,6 @@ class RandSpec extends FlatSpec with Matchers {
     res should be < 1.0
   }
 
-
   "intDouble" should "return an int, double-pain" in {
     val rng = SimpleRNG(42)
     val ((_: Int, d: Double), _) = Rand.intDouble(rng)

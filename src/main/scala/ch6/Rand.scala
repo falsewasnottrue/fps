@@ -8,7 +8,7 @@ object Rand {
   def unit[A](a: A): Rand[A] =
     rng => (a, rng)
 
-  def map[A,B](s: Rand[A])(f: A=>B): Rand[B] =
+  def map[A,B](s: Rand[A])(f: A => B): Rand[B] =
     rng => {
       val (a, rng2) = s(rng)
       (f(a), rng2)
@@ -53,4 +53,8 @@ object Rand {
     f(a)(next)
   }
 
+  def _map[A,B](s: Rand[A])(f: A => B): Rand[B] = flatMap(s)(a => unit(f(a)))
+
+  def _map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A,B) => C): Rand[C] =
+    flatMap(ra)(a => map(rb)(b => f(a,b)))
 }
