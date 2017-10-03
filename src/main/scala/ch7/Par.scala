@@ -15,20 +15,30 @@ object Par {
     override def cancel(mayInterruptIfRunning: Boolean): Boolean = false
   }
 
-  def map2[A,B,C](a: Par[A], b: Par[B])(f: (A,B) => C): Par[C] =
+  def map2[A,B,C](pa: Par[A], pb: Par[B])(f: (A,B) => C): Par[C] =
     (es: ExecutorService) => {
-      val af = a(es)
-      val bf = b(es)
+      val af = pa(es)
+      val bf = pb(es)
 
       UnitFuture(f(af.get, bf.get))
     }
 
-  def fork[A](a: => Par[A]): Par[A] =
+  def fork[A](pa: => Par[A]): Par[A] =
     es => es.submit(new Callable[A] {
-      override def call(): A = a(es).get
+      override def call(): A = pa(es).get
     })
 
   def lazyUnit[A](a: => A): Par[A] = fork(unit(a))
 
-  def run[A](s: ExecutorService)(a: Par[A]): Future[A] = a(s)
+  def map[A,B](pa: Par[A])(f: A => B): Par[B] = map2(pa, unit(()))((a,_) => f(a))
+
+  def sortPar(parList: Par[List[Int]]): Par[List[Int]] = map(parList)(_.sorted)
+
+  // ex 7.4
+  def asyncF[A,B](f: A => B): A => Par[B] = a => lazyUnit(f(a))
+  
+  // ex 7.5
+  def sequence[A](ps: List[Par[A]]): Par[List[A]] = ???
+
+  def run[A](s: ExecutorService)(pa: Par[A]): Future[A] = pa(s)
 }
