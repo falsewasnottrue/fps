@@ -43,5 +43,14 @@ object Par {
     case pa :: pas => map2(pa, sequence(pas))((a, as) => a :: as)
   }
 
+  def parMap[A,B](as: List[A])(f: A => B): Par[List[B]] = fork {
+    val fbs: List[Par[B]] = as.map(asyncF(f))
+    sequence(fbs)
+  }
+
+  def parFilter[A](as: List[A])(p: A => Boolean): Par[List[A]] = fork {
+    unit(as.filter(p))
+  }
+
   def run[A](s: ExecutorService)(pa: Par[A]): Future[A] = pa(s)
 }
