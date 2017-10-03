@@ -36,9 +36,12 @@ object Par {
 
   // ex 7.4
   def asyncF[A,B](f: A => B): A => Par[B] = a => lazyUnit(f(a))
-  
+
   // ex 7.5
-  def sequence[A](ps: List[Par[A]]): Par[List[A]] = ???
+  def sequence[A](ps: List[Par[A]]): Par[List[A]] = ps match {
+    case Nil => unit(Nil)
+    case pa :: pas => map2(pa, sequence(pas))((a, as) => a :: as)
+  }
 
   def run[A](s: ExecutorService)(pa: Par[A]): Future[A] = pa(s)
 }
