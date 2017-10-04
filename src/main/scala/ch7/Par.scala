@@ -53,4 +53,16 @@ object Par {
   }
 
   def run[A](s: ExecutorService)(pa: Par[A]): Future[A] = pa(s)
+
+  def flatMap[A,B](s: ExecutorService)(a: Par[A])(f: A => Par[B]): Par[B] =
+    f(run(s)(a).get())
+
+  def choiceCond[A](s: ExecutorService)(cond: Par[Boolean])(t: Par[A], f: Par[A]): Par[A] =
+    flatMap(s)(cond)(c => if (c) t else f)
+
+  def choiceN[A](s: ExecutorService)(n: Par[Int])(choices: List[Par[A]]): Par[A] =
+    flatMap(s)(n)(choices(_))
+
+  def choiceMap[K,V](s: ExecutorService)(key: Par[K])(values: Map[K, Par[V]]): Par[V] =
+    flatMap(s)(key)(values(_))
 }
