@@ -22,22 +22,22 @@ class ParSpec extends FlatSpec with Matchers {
   }
 
   "choiceCond" should "work implemented by flatMap" in {
-    choiceCond(es)(unit(true))(unit(1), unit(2))(es).get should be(1)
-    choiceCond(es)(unit(false))(unit(1), unit(2))(es).get should be(2)
+    choiceCond(unit(true))(unit(1), unit(2))(es).get should be(1)
+    choiceCond(unit(false))(unit(1), unit(2))(es).get should be(2)
   }
 
   "choiceN" should "work implemented by flatMap" in {
-    choiceN(es)(unit(0))(List(unit(1), unit(2), unit(3)))(es).get should be(1)
-    choiceN(es)(unit(1))(List(unit(1), unit(2), unit(3)))(es).get should be(2)
-    choiceN(es)(unit(2))(List(unit(1), unit(2), unit(3)))(es).get should be(3)
+    choiceN(unit(0))(List(unit(1), unit(2), unit(3)))(es).get should be(1)
+    choiceN(unit(1))(List(unit(1), unit(2), unit(3)))(es).get should be(2)
+    choiceN(unit(2))(List(unit(1), unit(2), unit(3)))(es).get should be(3)
   }
 
   "choiceMap" should "work implemented by flatMap" in {
-    choiceMap(es)(unit("a"))(Map("a" -> unit(1), "b" -> unit(7)))(es).get should be(1)
-    choiceMap(es)(unit("b"))(Map("a" -> unit(1), "b" -> unit(7)))(es).get should be(7)
+    choiceMap(unit("a"))(Map("a" -> unit(1), "b" -> unit(7)))(es).get should be(1)
+    choiceMap(unit("b"))(Map("a" -> unit(1), "b" -> unit(7)))(es).get should be(7)
   }
 
   "join" should "join a nested par" in {
-    join(es)(unit(unit(1)))(es).get should be(1)
+    join(unit(unit(1)))(es).get should be(1)
   }
 }

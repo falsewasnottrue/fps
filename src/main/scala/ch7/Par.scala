@@ -54,17 +54,18 @@ object Par {
 
   def run[A](s: ExecutorService)(pa: Par[A]): Future[A] = pa(s)
 
-  def flatMap[A,B](s: ExecutorService)(a: Par[A])(f: A => Par[B]): Par[B] =
-    f(run(s)(a).get())
+  def flatMap[A,B](a: Par[A])(f: A => Par[B]): Par[B] =
+    es => run(es)(f(run(es)(a).get()))
 
-  def choiceCond[A](s: ExecutorService)(cond: Par[Boolean])(t: Par[A], f: Par[A]): Par[A] =
-    flatMap(s)(cond)(c => if (c) t else f)
+  def choiceCond[A](cond: Par[Boolean])(t: Par[A], f: Par[A]): Par[A] =
+    flatMap(cond)(c => if (c) t else f)
 
-  def choiceN[A](s: ExecutorService)(n: Par[Int])(choices: List[Par[A]]): Par[A] =
-    flatMap(s)(n)(choices(_))
+  def choiceN[A](n: Par[Int])(choices: List[Par[A]]): Par[A] =
+    flatMap(n)(choices(_))
 
-  def choiceMap[K,V](s: ExecutorService)(key: Par[K])(values: Map[K, Par[V]]): Par[V] =
-    flatMap(s)(key)(values(_))
+  def choiceMap[K,V](key: Par[K])(values: Map[K, Par[V]]): Par[V] =
+    flatMap(key)(values(_))
 
-  def join[A](s: ExecutorService)(a: Par[Par[A]]): Par[A] = run(s)(a).get()
+  def join[A](a: Par[Par[A]]): Par[A] =
+    es => run(es)(run(es)(a).get())
 }
