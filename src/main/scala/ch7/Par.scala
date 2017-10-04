@@ -65,4 +65,6 @@ object Par {
 
   def choiceMap[K,V](s: ExecutorService)(key: Par[K])(values: Map[K, Par[V]]): Par[V] =
     flatMap(s)(key)(values(_))
+
+  def join[A](s: ExecutorService)(a: Par[Par[A]]): Par[A] = run(s)(a).get()
 }

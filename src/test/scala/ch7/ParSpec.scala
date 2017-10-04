@@ -36,4 +36,8 @@ class ParSpec extends FlatSpec with Matchers {
     choiceMap(es)(unit("a"))(Map("a" -> unit(1), "b" -> unit(7)))(es).get should be(1)
     choiceMap(es)(unit("b"))(Map("a" -> unit(1), "b" -> unit(7)))(es).get should be(7)
   }
+
+  "join" should "join a nested par" in {
+    join(es)(unit(unit(1)))(es).get should be(1)
+  }
 }
