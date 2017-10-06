@@ -9,7 +9,7 @@ class GenSpec extends FlatSpec with Matchers {
   "choose" should "generate values inside range" in {
     val seed = SimpleRNG(23)
 
-    val (_, res) = choose(7, 42).run(seed)
+    val (_, res) = choose(7, 42).sample.run(seed)
     res should be >= 7
     res should be < 42
   }
