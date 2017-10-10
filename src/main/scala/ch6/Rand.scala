@@ -1,22 +1,21 @@
 package ch6
 
 object Rand {
-  type Rand[+A] = RNG => (A, RNG)
+  type Rand[+A] = RNG => (RNG, A)
 
   val int: Rand[Int] = _.nextInt
 
-  def unit[A](a: A): Rand[A] =
-    rng => (a, rng)
+  def unit[A](a: A): Rand[A] = rng => (rng, a)
 
   def map[A,B](s: Rand[A])(f: A => B): Rand[B] =
     rng => {
-      val (a, rng2) = s(rng)
-      (f(a), rng2)
+      val (rng2, a) = s(rng)
+      (rng2, f(a))
     }
 
   def nonNegativeInt: Rand[Int] = rng => {
-    val (n, nextRNG) = rng.nextInt
-    (Math.abs(n), nextRNG)
+    val (nextRNG, n) = rng.nextInt
+    (nextRNG, Math.abs(n))
   }
 
   def nonNegativeEvent: Rand[Int] =
@@ -27,10 +26,10 @@ object Rand {
 
 
   def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A,B) => C): Rand[C] = rng => {
-    val (a, rng1) = ra(rng)
-    val (b, rng2) = rb(rng1)
+    val (rng1, a) = ra(rng)
+    val (rng2, b) = rb(rng1)
 
-    (f(a,b), rng2)
+    (rng2, f(a,b))
   }
 
   def both[A,B](ra: Rand[A], rb: Rand[B]): Rand[(A,B)] =
@@ -49,7 +48,7 @@ object Rand {
     sequence(List.fill(count)(int))
 
   def flatMap[A,B](ra: Rand[A])(f: A => Rand[B]): Rand[B] = rng => {
-    val (a, next) = ra(rng)
+    val (next, a) = ra(rng)
     f(a)(next)
   }
 
