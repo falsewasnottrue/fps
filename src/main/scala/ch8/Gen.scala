@@ -36,4 +36,4 @@ object Gen {
     if (n==0) unit(Nil) else listOfN(n-1, g).flatMap(ls => g.map(a => a :: ls))
 }
 
-case class SGen[+A](forSize: Int => Gen[A])
+case class SGen[A](forSize: Int => Gen[A])

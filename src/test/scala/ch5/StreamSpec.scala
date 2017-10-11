@@ -84,7 +84,7 @@ class StreamSpec extends FlatSpec with Matchers {
   "flatMap" should "flat map to a stream" in {
     Stream(1,2).flatMap(i => Stream(i*2, i*3)).toList should be(List(2,3,4,6))
     Stream(1,2).flatMap(i => Empty).toList should be(Nil)
-    Empty.flatMap(i => Empty).toList should be(Nil)
+    Empty.flatMap(_ => Empty).toList should be(Nil)
   }
 
   "constant" should "generate infinite streams" in {
@@ -95,5 +95,21 @@ class StreamSpec extends FlatSpec with Matchers {
 
   "from" should "start an infinite stream" in {
     from(3).take(3).toList should be(List(3,4,5))
+  }
+
+  "zip" should "zip two stream" in {
+    Stream(1,2,3,4).zip(Stream(4,3,2,1)).toList should be(List((1,4), (2,3), (3,2), (4,1)))
+
+    Stream(1,2,3).zip(Empty).toList should be(Nil)
+    Empty.zip(Stream(1,2,3)).toList should be(Nil)
+
+    Stream(1,2).zip(Stream(3,2,1)).toList should be(List((1,3), (2,2)))
+  }
+
+  "find" should "find an element that satisfies the predicate" in {
+    Stream(1,2,3).find(_ % 2 == 0) should be(Some(2))
+    Stream(1,2,3).find(_ > 4) should be(None)
+
+    Empty.find(_ => true) should be(None)
   }
 }
