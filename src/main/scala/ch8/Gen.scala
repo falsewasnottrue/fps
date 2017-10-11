@@ -3,10 +3,10 @@ package ch8
 import ch6.{RNG, State}
 
 case class Gen[A](sample: State[RNG,A]) {
-
   def map[B](f: A => B): Gen[B] = Gen(sample.map(f))
   def flatMap[B](f: A => Gen[B]): Gen[B] = Gen(sample.flatMap(a => f(a).sample))
 
+  def unsized: SGen[A] = SGen(_ => this)
 }
 
 object Gen {
@@ -36,4 +36,4 @@ object Gen {
     if (n==0) unit(Nil) else listOfN(n-1, g).flatMap(ls => g.map(a => a :: ls))
 }
 
-
+case class SGen[+A](forSize: Int => Gen[A])
