@@ -18,22 +18,10 @@ object Gen {
   def ints: Gen[Int] = Gen(State(rng => rng.nextInt))
 
   def choose(start: Int, end: Int): Gen[Int] =
-    Gen(
-      State(rng => {
-        val (nextRNG, value) = rng.nextInt
-        (nextRNG, value % (end-start) + start)
-      })
-    )
+    ints.map(i => i % (end - start) + start)
 
-  def boolean: Gen[Boolean] = Gen(
-    State(rng => {
-      val (nextRNG, value) = rng.nextInt
-      (nextRNG, value % 2 == 0)
-    })
-  )
+  def boolean: Gen[Boolean] = ints.map(_ % 2 == 0)
 
   def listOfN[A](n: Int, g: Gen[A]): Gen[List[A]] =
     if (n==0) unit(Nil) else listOfN(n-1, g).flatMap(ls => g.map(a => a :: ls))
 }
-
-case class SGen[A](forSize: Int => Gen[A])
