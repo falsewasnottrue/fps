@@ -26,6 +26,6 @@ object Gen {
     if (n==0) unit(Nil) else listOfN(n-1, g).flatMap(ls => g.map(a => a :: ls))
 
   def listOf[A](g: Gen[A]): SGen[List[A]] = SGen(i => Gen.listOfN(i, g))
-  
+
   def listOf1[A](g: Gen[A]): SGen[List[A]] = SGen(i => Gen.listOfN(i+1, g))
 }

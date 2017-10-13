@@ -6,7 +6,7 @@ import Prop._
 
 class ExampleSpec extends FlatSpec with Matchers {
 
-  "an example" should "work" in {
+  "max example" should "work" in {
     val smallInts = Gen.choose(-10, 10)
     val maxProp = forAll(listOf1(smallInts)) { ns =>
       val max = ns.max
@@ -14,5 +14,14 @@ class ExampleSpec extends FlatSpec with Matchers {
     }
 
     Prop.run(maxProp)
+  }
+
+  "sorted example" should "work" in {
+    val sortedProp = forAll(listOf(ints)) { ls =>
+      val sorted = ls.sorted
+      sorted.foldRight((true, 0)) {
+        case (curr, (acc, last)) => (acc && (last <= curr), curr)
+      }._1
+    }
   }
 }
