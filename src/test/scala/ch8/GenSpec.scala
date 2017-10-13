@@ -2,11 +2,11 @@ package ch8
 
 import org.scalatest.{FlatSpec, Matchers}
 import Gen._
-import ch6.SimpleRNG
+import ch6.RNG.Simple
 
 class GenSpec extends FlatSpec with Matchers {
 
-  val seed = SimpleRNG(23)
+  val seed = Simple(23)
 
   "choose" should "generate values inside range" in {
     val (_, res) = choose(7, 42).sample.run(seed)

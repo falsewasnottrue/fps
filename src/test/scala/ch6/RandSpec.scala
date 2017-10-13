@@ -2,11 +2,12 @@ package ch6
 
 import org.scalatest.{FlatSpec, Matchers}
 import Rand._
+import ch6.RNG.Simple
 
 class RandSpec extends FlatSpec with Matchers {
 
   "double" should "return a double beetween 0 and 1" in {
-    val seed = SimpleRNG(42)
+    val seed = Simple(42)
 
     val (_, res) = Rand.double(seed)
     res should be >= 0.0
@@ -14,7 +15,7 @@ class RandSpec extends FlatSpec with Matchers {
   }
 
   "intDouble" should "return an int, double-pain" in {
-    val rng = SimpleRNG(42)
+    val rng = Simple(42)
     val (_, (_: Int, d: Double)) = Rand.intDouble(rng)
 
     d should be >= 0.0
@@ -22,7 +23,7 @@ class RandSpec extends FlatSpec with Matchers {
   }
 
   "ints" should "return random ints" in {
-    val rng = SimpleRNG(42)
+    val rng = Simple(42)
     val (_, is) = Rand.ints(3)(rng)
 
     is.size should be(3)
@@ -36,7 +37,7 @@ class RandSpec extends FlatSpec with Matchers {
       }
     }
 
-    val (rng1, result1) = nonNegativeLessThan(10)(SimpleRNG(47))
+    val (rng1, result1) = nonNegativeLessThan(10)(Simple(47))
     val result2 = nonNegativeLessThan(10)(rng1)._2
 
     result1 should be >= 0

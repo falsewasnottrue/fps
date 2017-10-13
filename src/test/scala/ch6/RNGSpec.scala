@@ -7,7 +7,7 @@ class RNGSpec extends FlatSpec with Matchers {
 
   "nonNegativeInt" should "return a non-negative integer" in {
     val seed = new scala.util.Random().nextInt
-    val rng = SimpleRNG(seed)
+    val rng = Simple(seed)
 
     val (_, res) = nonNegativeInt(rng)
     res should be >= 0
@@ -15,7 +15,7 @@ class RNGSpec extends FlatSpec with Matchers {
 
   "double" should "return a double beetween 0 and 1" in {
     val seed = new scala.util.Random().nextInt
-    val rng = SimpleRNG(seed)
+    val rng = Simple(seed)
 
     val (_, res) = double(rng)
     res should be >= 0.0
@@ -23,7 +23,7 @@ class RNGSpec extends FlatSpec with Matchers {
   }
 
   "intDouble" should "return an int, double-pain" in {
-    val rng = SimpleRNG(42)
+    val rng = Simple(42)
     val (_, (i: Int, d: Double)) = intDouble(rng)
 
     d should be >= 0.0
@@ -31,7 +31,7 @@ class RNGSpec extends FlatSpec with Matchers {
   }
 
   "doubleInt" should "return an double, int-pain" in {
-    val rng = SimpleRNG(42)
+    val rng = Simple(42)
     val (_, (d: Double, i: Int)) = doubleInt(rng)
 
     d should be >= 0.0
@@ -39,7 +39,7 @@ class RNGSpec extends FlatSpec with Matchers {
   }
 
   "double3" should "return 3 doubles" in {
-    val rng = SimpleRNG(42)
+    val rng = Simple(42)
 
     val (_, (d1: Double, d2: Double, d3: Double)) = double3(rng)
 

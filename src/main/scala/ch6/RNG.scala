@@ -4,17 +4,17 @@ trait RNG {
   def nextInt: (RNG, Int)
 }
 
-case class SimpleRNG(seed: Long) extends RNG {
-  def nextInt: (RNG, Int) = {
-    val newSeed = (seed * 0x5DEECE66DL + 0xBL) & 0xFFFFFFFFFFFFL
-    val nextRNG = SimpleRNG(newSeed)
-    val n = (newSeed >>> 16).toInt
-
-    (nextRNG, n)
-  }
-}
-
 object RNG {
+  case class Simple(seed: Long) extends RNG {
+    def nextInt: (RNG, Int) = {
+      val newSeed = (seed * 0x5DEECE66DL + 0xBL) & 0xFFFFFFFFFFFFL
+      val nextRNG = Simple(newSeed)
+      val n = (newSeed >>> 16).toInt
+
+      (nextRNG, n)
+    }
+  }
+
   def nonNegativeInt(rng: RNG): (RNG, Int) = {
     val (nextRng, n) = rng.nextInt
     (nextRng, Math.abs(n))

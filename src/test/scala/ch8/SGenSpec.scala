@@ -2,11 +2,11 @@ package ch8
 
 import org.scalatest.{FlatSpec, Matchers}
 import Gen.ints
-import ch6._
+import ch6.RNG.Simple
 
 class SGenSpec extends FlatSpec with Matchers {
 
-  val RNG = SimpleRNG(42)
+  val RNG = Simple(42)
 
   "listOf" should "generate different sized lists" in {
     val n = 42
