@@ -12,10 +12,12 @@ trait Parsers[ParseError, Parser[+_]] { self =>
   def or[A](s1: Parser[A], s2: Parser[A]): Parser[A]
   def listOfN[A](n: Int, p: Parser[A]): Parser[List[A]]
   def slice[A](p: Parser[A]): Parser[String]
-  def many[A](pa: Parser[A]): Parser[List[A]]
   def many1[A](pa: Parser[A]): Parser[List[A]]
-  def succeed[A](a: A): Parser[A] = string("").map(_ => a)
   def product[A,B](pa: Parser[A], pb: Parser[B]): Parser[(A,B)]
+
+  def succeed[A](a: A): Parser[A] = string("").map(_ => a)
+  def many[A](pa: Parser[A]): Parser[List[A]] =
+    map2(pa, many(pa))(_ :: _) or succeed(List())
 
   implicit def char(c: Char): Parser[Char] = string(c.toString).map(_.charAt(0))
   implicit def string(s: String): Parser[String]
