@@ -10,7 +10,6 @@ trait Parsers[ParseError, Parser[+_]] { self =>
   def map2[A,B,C](pa: Parser[A], pb: Parser[B])(f: (A,B) => C): Parser[C] = (pa ** pb).map(f(_))
 
   def or[A](s1: Parser[A], s2: Parser[A]): Parser[A]
-  def listOfN[A](n: Int, p: Parser[A]): Parser[List[A]]
   def slice[A](p: Parser[A]): Parser[String]
   def many1[A](pa: Parser[A]): Parser[List[A]]
   def product[A,B](pa: Parser[A], pb: Parser[B]): Parser[(A,B)]
@@ -18,6 +17,8 @@ trait Parsers[ParseError, Parser[+_]] { self =>
   def succeed[A](a: A): Parser[A] = string("").map(_ => a)
   def many[A](pa: Parser[A]): Parser[List[A]] =
     map2(pa, many(pa))(_ :: _) or succeed(List())
+  def listOfN[A](n: Int, p: Parser[A]): Parser[List[A]] =
+    if (n==0) succeed(List()) else map2(p, listOfN(n-1, p))(_ :: _)
 
   implicit def char(c: Char): Parser[Char] = string(c.toString).map(_.charAt(0))
   implicit def string(s: String): Parser[String]
