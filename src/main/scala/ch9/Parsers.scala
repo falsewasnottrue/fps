@@ -4,16 +4,20 @@ import ch8.Gen
 
 trait Parsers[ParseError, Parser[+_]] { self =>
 
-  def map[A,B](pa: Parser[A])(f: A => B): Parser[B]
-
   def run[A](p: Parser[A])(input: String): Either[ParseError, A]
+
+  def map[A,B](pa: Parser[A])(f: A => B): Parser[B]
+  def map2[A,B,C](pa: Parser[A], pb: Parser[B])(f: (A,B) => C): Parser[C] = (pa ** pb).map(f(_))
 
   def or[A](s1: Parser[A], s2: Parser[A]): Parser[A]
   def listOfN[A](n: Int, p: Parser[A]): Parser[List[A]]
-
+  def slice[A](p: Parser[A]): Parser[String]
   def many[A](pa: Parser[A]): Parser[List[A]]
+  def many1[A](pa: Parser[A]): Parser[List[A]]
+  def succeed[A](a: A): Parser[A] = string("").map(_ => a)
+  def product[A,B](pa: Parser[A], pb: Parser[B]): Parser[(A,B)]
 
-  implicit def char(c: Char): Parser[Char]
+  implicit def char(c: Char): Parser[Char] = string(c.toString).map(_.charAt(0))
   implicit def string(s: String): Parser[String]
   implicit def asStringParser[A](a: A)(implicit f: A => Parser[String]): ParserOps[String] =
     ParserOps(f(a))
@@ -24,6 +28,8 @@ trait Parsers[ParseError, Parser[+_]] { self =>
 
     def many = self.many(p)
     def map[B](f: A => B): Parser[B] = self.map(p)(f)
+    def **[B](p2: Parser[B]): Parser[(A,B)] = self.product(p, p2)
+    def product[B](p2: Parser[B]): Parser[(A,B)] = self.product(p, p2)
   }
 
   object Laws {
