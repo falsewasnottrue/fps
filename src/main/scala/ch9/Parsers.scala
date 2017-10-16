@@ -6,7 +6,7 @@ trait Parsers[ParseError, Parser[+_]] { self =>
 
   def run[A](p: Parser[A])(input: String): Either[ParseError, A]
 
-  def map[A,B](pa: Parser[A])(f: A => B): Parser[B]
+  def map[A,B](pa: Parser[A])(f: A => B): Parser[B] = pa.flatMap(f andThen succeed)
   def flatMap[A,B](pa: Parser[A])(f: A => Parser[B]): Parser[B]
   def map2[A,B,C](pa: Parser[A], pb: => Parser[B])(f: (A,B) => C): Parser[C] = (pa ** pb).map(f(_))
 
