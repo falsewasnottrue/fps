@@ -41,4 +41,9 @@ object Monoid {
     override def op(a1: Option[A], a2: Option[A]): Option[A] = a1 orElse a2
     override def zero: Option[A] = None
   }
+
+  def endoMonoid[A]: Monoid[A => A] = new Monoid[A => A] {
+    override def op(a1: A => A, a2: A => A) = a2 andThen a1 // ???
+    override def zero = _ => _ // Id
+  }
 }
