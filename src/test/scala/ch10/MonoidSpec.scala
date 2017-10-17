@@ -7,12 +7,24 @@ import ch8.{Gen, Passed, Prop}
 
 class MonoidSpec extends FlatSpec with Matchers {
 
+  "listMonoid" should "meet the monoid laws" in {
+    Prop.run(laws(listMonoid[Int])(Gen.listOf(Gen.ints).forSize(10))) should be(Passed)
+  }
+
   "intAddition" should "meet the monoid laws" in {
     Prop.run(laws(intAddition)(Gen.ints)) should be(Passed)
   }
 
   "intMultiplication" should "meet the monoid laws" in {
     Prop.run(laws(intMultiplication)(Gen.ints)) should be(Passed)
+  }
+
+  "booleanOr" should "meet the monoid laws" in {
+    Prop.run(laws(booleanOr)(Gen.bools)) should be(Passed)
+  }
+
+  "booleanAnd" should "meet the monoid laws" in {
+    Prop.run(laws(booleanAnd)(Gen.bools)) should be(Passed)
   }
 
   "optionMonoid" should "meet the monoid laws" in {
