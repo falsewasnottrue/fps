@@ -65,12 +65,14 @@ object Prop {
     prop.run(max, n, rng)
   })
 
-  def run(p: Prop, maxSize: MaxSize = 100, testCases: TestCases = 100, rng: RNG = RNG.Simple(System.currentTimeMillis)): Unit =
+  def run(p: Prop, maxSize: MaxSize = 100, testCases: TestCases = 100, rng: RNG = RNG.Simple(System.currentTimeMillis)): Result =
     p.run(maxSize, testCases, rng) match {
-      case Falsified(msg, n) =>
+      case res@Falsified(msg, n) =>
         println(s"! Falsified after $n passed tests:\n $msg")
+        res
       case Passed =>
         println(s"+ OK, passed $testCases tests.")
+        Passed
     }
 }
 

@@ -8,7 +8,9 @@ trait Parsers[ParseError, Parser[+_]] { self =>
 
   def map[A,B](pa: Parser[A])(f: A => B): Parser[B] = pa.flatMap(f andThen succeed)
   def flatMap[A,B](pa: Parser[A])(f: A => Parser[B]): Parser[B]
-  def map2[A,B,C](pa: Parser[A], pb: => Parser[B])(f: (A,B) => C): Parser[C] = (pa ** pb).map(f(_))
+  def map2[A,B,C](pa: Parser[A], pb: => Parser[B])(f: (A,B) => C): Parser[C] = (pa ** pb).map {
+    case (a,b) => f(a,b)
+  }
 
   def or[A](p1: Parser[A], p2: => Parser[A]): Parser[A]
   def slice[A](p: Parser[A]): Parser[String]
@@ -37,6 +39,7 @@ trait Parsers[ParseError, Parser[+_]] { self =>
     def product[B](p2: Parser[B]): Parser[(A,B)] = self.product(p, p2)
   }
 
+  /**
   object Laws {
     import ch8.Prop._
 
@@ -46,4 +49,5 @@ trait Parsers[ParseError, Parser[+_]] { self =>
     def mapLaw[A](p: Parser[A])(in: Gen[String]): Prop =
       equal(p, p.map(a => a))(in)
   }
+    */
 }

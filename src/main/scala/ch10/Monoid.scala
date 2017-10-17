@@ -1,5 +1,7 @@
 package ch10
 
+import ch8.Gen
+
 trait Monoid[A] {
   def op(a1: A, a2: A): A
   def zero: A
@@ -44,6 +46,27 @@ object Monoid {
 
   def endoMonoid[A]: Monoid[A => A] = new Monoid[A => A] {
     override def op(a1: A => A, a2: A => A) = a2 andThen a1 // ???
-    override def zero = _ => _ // Id
+    override def zero = a => a // Id
   }
+}
+
+object MonoidLaws {
+  import ch8.Prop._
+  import ch8.Gen._
+
+  def associativity[A](m: Monoid[A])(ga: Gen[A]): Prop = {
+    forAll(listOfN(3, ga)) { l =>
+      val a :: b :: c :: Nil = l
+      m.op(a, m.op(b, c)) == m.op(m.op(a, b), c)
+    }
+  }
+
+  def neutralElement[A](m: Monoid[A])(ga: Gen[A]): Prop = {
+    forAll(ga) { a =>
+      m.op(m.zero, a) == a && m.op(a, m.zero) == a
+    }
+  }
+
+  def laws[A](m: Monoid[A])(ga: Gen[A]): Prop =
+    associativity(m)(ga) && neutralElement(m)(ga)
 }
