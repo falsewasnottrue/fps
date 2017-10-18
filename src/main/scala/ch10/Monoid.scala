@@ -45,8 +45,13 @@ object Monoid {
   }
 
   def endoMonoid[A]: Monoid[A => A] = new Monoid[A => A] {
-    override def op(a1: A => A, a2: A => A) = a2 andThen a1 // ???
-    override def zero = a => a // Id
+    override def op(a1: A => A, a2: A => A) = a2 andThen a1
+    override def zero = identity[A]
+  }
+
+  def dual[A](m: Monoid[A]): Monoid[A] = new Monoid[A] {
+    override def op(a1: A, a2: A): A = m.op(a2, a1)
+    override def zero: A = m.zero
   }
 
   def foldMap[A,B](as: List[A], m: Monoid[B])(f: A => B): B =
@@ -54,7 +59,12 @@ object Monoid {
       case (b, a) => m.op(b, f(a))
     }
 
-  // def foldLeft[A](as: List[A])(z: A)(op: (A,A) => A): A
+  def foldRight[A, B](as: List[A])(z: B)(f: (A, B) => B): B = {
+    foldMap(as, endoMonoid[B])(f.curried)(z)
+  }
+
+  def foldLeft[A, B](as: List[A])(z: B)(f: (B, A) => B): B =
+    foldMap(as, dual(endoMonoid[B]))(a => b => f(b, a))(z)
 }
 
 object MonoidLaws {

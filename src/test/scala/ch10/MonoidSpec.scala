@@ -35,4 +35,14 @@ class MonoidSpec extends FlatSpec with Matchers {
     foldMap(List(1,2,3,4), intAddition)(identity[Int]) should be(10)
     foldMap(List(1,2,3,4), intMultiplication)(identity[Int]) should be(24)
   }
+
+  "foldRight" should "fold a list" in {
+    foldRight(List(1,2,3,4))(0)(_ + _) should be(10)
+    foldRight(List(1,2,3,4))(1)(_ * _) should be(24)
+  }
+
+  "foldLeft" should "fold a list" in {
+    foldLeft(List(1,2,3,4))(0)(_ + _) should be(10)
+    foldLeft(List(1,2,3,4))(1)(_ * _) should be(24)
+  }
 }
