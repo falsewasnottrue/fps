@@ -12,6 +12,27 @@ trait Foldable[F[_]] {
     foldLeft(as)(m.zero)(m.op)
 }
 
+object ListFoldable extends Foldable[List] {
+  override def foldLeft[A, B](as: List[A])(z: B)(f: (B, A) => B) = as.foldLeft(z)(f)
+  override def foldRight[A, B](as: List[A])(z: B)(f: (A, B) => B) = as.foldRight(z)(f)
+
+  override def foldMap[A, B](as: List[A])(f: A => B)(mb: Monoid[B]) =
+    as.foldLeft(mb.zero) {
+      case (b,a) => mb.op(b, f(a))
+    }
+}
+
+object OptionFoldable extends Foldable[Option] {
+  override def foldLeft[A, B](as: Option[A])(z: B)(f: (B, A) => B) =
+    as.map(a => f(z,a)).getOrElse(z)
+
+  override def foldRight[A, B](as: Option[A])(z: B)(f: (A, B) => B) =
+    as.map(a => f(a,z)).getOrElse(z)
+
+  override def foldMap[A, B](as: Option[A])(f: A => B)(mb: Monoid[B]) =
+    as.map(f).getOrElse(mb.zero)
+}
+
 object TreeFoldable extends Foldable[Tree] {
 
   override def foldLeft[A, B](as: Tree[A])(z: B)(f: (B, A) => B): B = as match {

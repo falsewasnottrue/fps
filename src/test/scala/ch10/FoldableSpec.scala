@@ -19,4 +19,19 @@ class FoldableSpec extends FlatSpec with Matchers {
     val t = Branch(Branch(Leaf("a"), Leaf("bc")), Leaf("def"))
     TreeFoldable.foldMap(t)(_.length)(Monoid.intAddition) should be(6)
   }
+
+  "Foldable[Option]" should "implement foldLeft" in {
+    OptionFoldable.foldLeft[Int,Int](None)(1)(_ + _) should be(1)
+    OptionFoldable.foldLeft(Some(2))(1)(_ + _) should be(3)
+  }
+
+  it should "implement foldRight" in {
+    OptionFoldable.foldRight[Int,Int](None)(1)(_ + _) should be(1)
+    OptionFoldable.foldRight(Some(2))(1)(_ + _) should be(3)
+  }
+
+  it should "implement foldMap" in {
+    OptionFoldable.foldMap[Int,Int](None)(identity[Int])(Monoid.intAddition) should be(0)
+    OptionFoldable.foldMap(Some(2))(identity[Int])(Monoid.intAddition) should be(2)
+  }
 }
