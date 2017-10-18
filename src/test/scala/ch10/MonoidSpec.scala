@@ -30,4 +30,9 @@ class MonoidSpec extends FlatSpec with Matchers {
   "optionMonoid" should "meet the monoid laws" in {
     Prop.run(laws(optionMonoid[Int])(Gen.opts(Gen.ints))) should be(Passed)
   }
+
+  "foldMap" should "fold a list using a monoid" in {
+    foldMap(List(1,2,3,4))(intAddition) should be(10)
+    foldMap(List(1,2,3,4))(intMultiplication) should be(24)
+  }
 }

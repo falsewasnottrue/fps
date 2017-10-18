@@ -48,6 +48,8 @@ object Monoid {
     override def op(a1: A => A, a2: A => A) = a2 andThen a1 // ???
     override def zero = a => a // Id
   }
+
+  def foldMap[A](as: List[A])(m: Monoid[A]): A = as.fold(m.zero)(m.op)
 }
 
 object MonoidLaws {
