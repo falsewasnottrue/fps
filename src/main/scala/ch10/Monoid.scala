@@ -49,7 +49,12 @@ object Monoid {
     override def zero = a => a // Id
   }
 
-  def foldMap[A](as: List[A])(m: Monoid[A]): A = as.fold(m.zero)(m.op)
+  def foldMap[A,B](as: List[A], m: Monoid[B])(f: A => B): B =
+    as.foldLeft(m.zero) {
+      case (b, a) => m.op(b, f(a))
+    }
+
+  // def foldLeft[A](as: List[A])(z: A)(op: (A,A) => A): A
 }
 
 object MonoidLaws {
