@@ -3,13 +3,17 @@ package ch10
 import ch3.{Branch, Leaf, Tree}
 
 trait Foldable[F[_]] {
-
   def foldLeft[A,B](as: F[A])(z: B)(f: (B, A) => B): B
   def foldRight[A,B](as: F[A])(z: B)(f: (A, B) => B): B
   def foldMap[A, B](as: F[A])(f: A => B)(mb: Monoid[B]): B
 
   def concatenate[A](as: F[A])(m: Monoid[A]): A =
     foldLeft(as)(m.zero)(m.op)
+
+  def toList[A](as: F[A]): List[A] =
+    foldLeft(as)(List[A]()) {
+      case (acc, curr) => curr :: acc
+    }
 }
 
 object ListFoldable extends Foldable[List] {

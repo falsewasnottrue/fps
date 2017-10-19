@@ -34,4 +34,14 @@ class FoldableSpec extends FlatSpec with Matchers {
     OptionFoldable.foldMap[Int,Int](None)(identity[Int])(Monoid.intAddition) should be(0)
     OptionFoldable.foldMap(Some(2))(identity[Int])(Monoid.intAddition) should be(2)
   }
+
+  "toList" should "turn an option into a list" in {
+    OptionFoldable.toList(None) should be(Nil)
+    OptionFoldable.toList(Some(1)) should be(List(1))
+  }
+
+  it should "turn a tree into a list" in {
+    val t = Branch(Branch(Leaf(1), Leaf(2)), Leaf(3))
+    TreeFoldable.toList(t) should be(List(3,2,1))
+  }
 }
