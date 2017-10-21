@@ -10,6 +10,12 @@ trait Monad[M[_]] extends Functor[M] {
 
   def map2[A,B,C](ma: M[A], mb: M[B])(f: (A, B) => C): M[C] =
     flatMap(ma)(a => map(mb)(b => f(a,b)))
+
+  def sequence[A](lma: List[M[A]]): M[List[A]] =
+    lma.foldRight(unit(List[A]()))((ma, mla) => map2(ma, mla)(_ :: _))
+
+  def traverse[A,B](la: List[A])(f: A => M[B]): M[List[B]] =
+    la.foldRight(unit(List[B]()))((a, mla) => map2(f(a), mla)(_ :: _))
 }
 
 object OptionMonad extends Monad[Option] {
