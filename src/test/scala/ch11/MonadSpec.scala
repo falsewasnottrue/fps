@@ -18,4 +18,9 @@ class MonadSpec extends FlatSpec with Matchers {
     OptionMonad.traverse(List(1,2,3))(Some(_)) should be(Some(List(1,2,3)))
     OptionMonad.traverse(List(1,2,3))(i => if (i%2 == 0) Some(i) else None) should be(None)
   }
+
+  "replicateM" should "be implemented for all monads" in {
+    OptionMonad.replicateM(3, Some(3)) should be(Some(List(3,3,3)))
+    OptionMonad.replicateM(3, None) should be(None)
+  }
 }
