@@ -19,6 +19,9 @@ trait Monad[M[_]] extends Functor[M] {
 
   def replicateM[A](n: Int, ma: M[A]): M[List[A]] =
     if (n==0) unit(List[A]()) else map2(ma, replicateM(n-1, ma))(_ :: _)
+
+  def filterM[A](as: List[A])(f: A => M[Boolean]): M[List[A]] =
+    as.foldRight(unit(List[A]()))((a, mla) => map2(f(a), mla)((cond, la) => if (cond) a :: la else la))
 }
 
 object OptionMonad extends Monad[Option] {

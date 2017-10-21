@@ -23,4 +23,11 @@ class MonadSpec extends FlatSpec with Matchers {
     OptionMonad.replicateM(3, Some(3)) should be(Some(List(3,3,3)))
     OptionMonad.replicateM(3, None) should be(None)
   }
+
+  "filterM" should "be implemented for all monads" in {
+    OptionMonad.filterM(List(1,2,3))(_ => Some(true)) should be(Some(List(1,2,3)))
+    OptionMonad.filterM(List(1,2,3))(i => Some(i % 2 == 1)) should be(Some(List(1,3)))
+    OptionMonad.filterM(List(1,2,3))(_ => None) should be(None)
+    OptionMonad.filterM(List(1,2,3))(i => if (i%2 == 0) Some(true) else None) should be(None)
+  }
 }
