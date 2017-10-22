@@ -1,5 +1,7 @@
 package ch11
 
+import ch6.State
+
 trait Monad[M[_]] extends Functor[M] {
 
   def unit[A](a: => A): M[A]
@@ -36,4 +38,14 @@ object OptionMonad extends Monad[Option] {
 case class Id[A](value: A) extends Monad[Id] {
   override def unit[A](a: => A) = Id(a)
   override def flatMap[A, B](ma: Id[A])(f: A => Id[B]) = f(value)
+}
+
+class StateMonads[S] {
+  type StateS[A] = State[S, A]
+
+  val monad = new Monad[StateS] {
+    def unit[A](a: => A): State[S, A] = State(s => (s, a))
+    override def flatMap[A,B](st: State[S, A])(f: A => State[S, B]): State[S, B] =
+      st flatMap f
+  }
 }
